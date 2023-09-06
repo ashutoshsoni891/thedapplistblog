@@ -11,7 +11,7 @@ class MyDocument extends Document {
             content="width=device-width, initial-scale=1.0"
           />
           <link rel="shortcut icon" href="favicon.ico" />
-          <link rel="stylesheet" href="/css/nprogress.css" />
+          {/* <link rel="stylesheet" href="/css/nprogress.css" /> */}
         </Head>{" "}
         <body>
           <Main />

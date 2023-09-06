@@ -1,8 +1,8 @@
 textarea:hover,
 textarea:active,
-input:not([type='checkbox']):hover,
-input:not([type='checkbox']):focus,
-input:not([type='checkbox']):active,
+input:not([type="checkbox"]):hover,
+input:not([type="checkbox"]):focus,
+input:not([type="checkbox"]):active,
 textarea:focus,
 button:focus,
 button:active,
@@ -19,8 +19,8 @@ label:focus,
   border: none;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Fjalla+One|Noto+Serif&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900&display=swap');
+// @import url('https://fonts.googleapis.com/css?family=Fjalla+One|Noto+Serif&display=swap');
+// @import url('https://fonts.googleapis.com/css?family=Nunito:400,900&display=swap');
 
 :root {
   --primaryColor: #03a87c;
@@ -34,7 +34,7 @@ label:focus,
   --darkGrey: #484848;
   --mainTransition: all 0.3s linear;
   --mainSpacing: 2px;
-  --mainFont: 'Nunito', sans-serif;
+  --mainFont: "Nunito", sans-serif;
 }
 
 html {

@@ -1,28 +1,26 @@
-import { useEffect, useState } from 'react';
-import { getCookie } from '../../../actions/auth';
+import { useEffect, useState } from "react";
+import { getCookie } from "../../../actions/auth";
 import {
   createCategory,
   getCategories,
   deleteCategory,
-} from '../../../actions/category';
-import FormInput from '../../FormInput/FormInput';
-import Modal from '../../Modal/Modal';
-
-import './Categories.scss';
+} from "../../../actions/category";
+import FormInput from "../../FormInput/FormInput";
+import Modal from "../../Modal/Modal";
 
 const Categories = () => {
   const [values, setValues] = useState({
-    name: '',
+    name: "",
     error: false,
     success: false,
     categories: [],
     removed: false,
     reload: false,
-    slug: '',
+    slug: "",
   });
   const [modal, setModal] = useState(false);
   const { name, error, success, categories, removed, reload, slug } = values;
-  const token = getCookie('token');
+  const token = getCookie("token");
 
   useEffect(() => {
     loadCategories();
@@ -56,7 +54,7 @@ const Categories = () => {
           ...values,
           error: false,
           success: false,
-          name: '',
+          name: "",
           removed: !removed,
           reload: !reload,
         });
@@ -70,7 +68,7 @@ const Categories = () => {
       name: e.target.value,
       error: false,
       success: false,
-      removed: '',
+      removed: "",
     });
   };
 
@@ -83,7 +81,7 @@ const Categories = () => {
           ...values,
           error: false,
           success: false,
-          name: '',
+          name: "",
           removed: !removed,
           reload: !reload,
         });
@@ -95,31 +93,31 @@ const Categories = () => {
 
   return (
     <>
-      <section className='categories-crud'>
+      <section className="categories-crud">
         <form onSubmit={handleSubmit}>
           <FormInput
             onChange={handleChange}
-            label='Category name'
+            label="Category name"
             value={name}
-            type='text'
+            type="text"
             required
           />
 
           <button
-            type='submit'
-            className='categories-crud__create-category-btn'
+            type="submit"
+            className="categories-crud__create-category-btn"
           >
             Create Category
           </button>
         </form>
-        <div className='categories-crud__list'>
+        <div className="categories-crud__list">
           {categories.map((category) => (
             <button
               onClick={() => toggleModal(category.slug)}
-              title='Click to delete'
+              title="Click to delete"
               key={category._id}
-              type='button'
-              className='categories-crud__list--category-btn'
+              type="button"
+              className="categories-crud__list--category-btn"
             >
               {category.name}
             </button>
@@ -128,11 +126,11 @@ const Categories = () => {
       </section>
 
       {modal ? (
-        <div onClick={toggleModal} className='modal__back-drop'></div>
+        <div onClick={toggleModal} className="modal__back-drop"></div>
       ) : null}
 
       <Modal
-        text='Delete Category'
+        text="Delete Category"
         slug={slug}
         showModal={modal}
         close={toggleModal}

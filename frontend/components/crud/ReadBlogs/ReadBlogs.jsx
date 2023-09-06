@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
-import { getCookie, isAuth } from '../../../actions/auth';
-import { fetchAllBlogs, removeBlog } from '../../../actions/blog';
-import ReadBlogCard from '../ReadBlogCard/ReadBlogCard';
-import Modal from '../../Modal/Modal';
-import { toast } from 'react-toastify';
-
-import './ReadBlogs.scss';
+import { useState, useEffect } from "react";
+import { getCookie, isAuth } from "../../../actions/auth";
+import { fetchAllBlogs, removeBlog } from "../../../actions/blog";
+import ReadBlogCard from "../ReadBlogCard/ReadBlogCard";
+import Modal from "../../Modal/Modal";
+import { toast } from "react-toastify";
 
 const ReadBlogs = ({ username }) => {
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState();
   const [modal, setModal] = useState(false);
-  const [slug, setSlug] = useState('');
-  const token = getCookie('token');
+  const [slug, setSlug] = useState("");
+  const token = getCookie("token");
 
   const loadBlogs = async () => {
     let blogs;
@@ -48,21 +46,21 @@ const ReadBlogs = ({ username }) => {
   };
 
   const notifySuccess = () => {
-    toast(<h3 className='toast-success'>{message}</h3>, {
+    toast(<h3 className="toast-success">{message}</h3>, {
       type: toast.TYPE.SUCCESS,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 5000,
       closeButton: false,
       hideProgressBar: true,
     });
-    setMessage('');
+    setMessage("");
   };
 
   return (
     <>
-      <div className='read-blogs'>
-        <div className='read-blogs__banner'>
-          <h4 className='read-blogs__title'>Manage Blogs</h4>
+      <div className="read-blogs">
+        <div className="read-blogs__banner">
+          <h4 className="read-blogs__title">Manage Blogs</h4>
         </div>
 
         {blogs.map((blog) => (
@@ -71,11 +69,11 @@ const ReadBlogs = ({ username }) => {
       </div>
 
       {modal ? (
-        <div onClick={toggleModal} className='modal__back-drop'></div>
+        <div onClick={toggleModal} className="modal__back-drop"></div>
       ) : null}
 
       <Modal
-        text='Delete Blog'
+        text="Delete Blog"
         slug={slug}
         showModal={modal}
         close={toggleModal}
@@ -84,7 +82,7 @@ const ReadBlogs = ({ username }) => {
         Are you sure you want to delete this blog?
       </Modal>
 
-      <div className='notify-message'>{message ? notifySuccess() : null}</div>
+      <div className="notify-message">{message ? notifySuccess() : null}</div>
     </>
   );
 };

@@ -1,25 +1,23 @@
-import { isAuth, signout } from '../../../actions/auth';
-import Router from 'next/router';
-import Link from 'next/link';
-
-import './SideDrawer.scss';
+import { isAuth, signout } from "../../../actions/auth";
+import Router from "next/router";
+import Link from "next/link";
 
 const SideDrawer = ({ show }) => {
   return (
-    <nav className={show ? 'side-drawer open' : 'side-drawer'}>
+    <nav className={show ? "side-drawer open" : "side-drawer"}>
       <ul>
         <li>
-          <Link href='/'>
+          <Link href="/">
             <a>Home</a>
           </Link>
         </li>
         <li>
-          <Link href='/blogs'>
+          <Link href="/blogs">
             <a>Blogs</a>
           </Link>
         </li>
         <li>
-          <Link href='/contact'>
+          <Link href="/contact">
             <a>Contact</a>
           </Link>
         </li>
@@ -27,20 +25,20 @@ const SideDrawer = ({ show }) => {
           <>
             {isAuth().role === 1 ? (
               <li>
-                <Link href='/admin'>
+                <Link href="/admin">
                   <a>{`${isAuth().name}`}</a>
                 </Link>
               </li>
             ) : (
               <li>
-                <Link href='/user'>
+                <Link href="/user">
                   <a>{`${isAuth().name}`}</a>
                 </Link>
               </li>
             )}
             <li>
-              <Link href='/signin'>
-                <a onClick={() => signout(() => Router.replace('/signin'))}>
+              <Link href="/signin">
+                <a onClick={() => signout(() => Router.replace("/signin"))}>
                   SignOut
                 </a>
               </Link>
@@ -49,19 +47,19 @@ const SideDrawer = ({ show }) => {
         ) : (
           <>
             <li>
-              <Link href='/signin'>
+              <Link href="/signin">
                 <a>SignIn</a>
               </Link>
             </li>
             <li>
-              <Link href='/signup'>
+              <Link href="/signup">
                 <a>SignUp</a>
               </Link>
             </li>
           </>
         )}
         <li>
-          <a href='/user/crud/blog'>Write</a>
+          <a href="/user/crud/blog">Write</a>
         </li>
       </ul>
     </nav>

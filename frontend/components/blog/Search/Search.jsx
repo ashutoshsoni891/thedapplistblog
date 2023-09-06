@@ -1,14 +1,13 @@
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { blogSearch } from '../../../actions/blog';
-import './Search.scss';
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { blogSearch } from "../../../actions/blog";
 
 const Search = () => {
   const [values, setValues] = useState({
-    search: '',
+    search: "",
     results: [],
     searched: false,
-    message: '',
+    message: "",
     error: null,
   });
 
@@ -36,7 +35,7 @@ const Search = () => {
       if (response.length === 0) {
         setValues({
           ...values,
-          message: 'No blogs found',
+          message: "No blogs found",
         });
       }
     } catch (error) {
@@ -54,7 +53,7 @@ const Search = () => {
       search: e.target.value,
       searched: false,
       results: [],
-      message: '',
+      message: "",
     });
   };
 
@@ -64,30 +63,30 @@ const Search = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='search'>
+    <form onSubmit={handleSubmit} className="search">
       <input
-        type='search'
-        className='search__input-bar'
-        placeholder='Search...'
+        type="search"
+        className="search__input-bar"
+        placeholder="Search..."
         onChange={handleChange}
       />
       {results && (
-        <ul className='search__list-group'>
+        <ul className="search__list-group">
           {results.map((blog) => (
             <Link
               href={`/blogs/${blog.slug}`}
               key={blog._id}
-              className='search__link'
+              className="search__link"
             >
-              <a className='search__link'>
-                <li className='search__list-group-item' key={blog._id}>
+              <a className="search__link">
+                <li className="search__list-group-item" key={blog._id}>
                   {blog.title}
                 </li>
               </a>
             </Link>
           ))}
           {message ? (
-            <li className='search__list-group-item search__list-group-item__message'>
+            <li className="search__list-group-item search__list-group-item__message">
               {message}
             </li>
           ) : null}

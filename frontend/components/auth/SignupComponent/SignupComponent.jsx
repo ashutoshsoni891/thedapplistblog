@@ -1,28 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { signup, preSignup, isAuth } from '../../../actions/auth';
-import { toast } from 'react-toastify';
-import FormInput from '../../FormInput/FormInput';
-import GoogleLoginButton from '../GoogleLogin/GoogleLoginButton';
-import Link from 'next/link';
-
-import './SignupComponent.scss';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signup, preSignup, isAuth } from "../../../actions/auth";
+import { toast } from "react-toastify";
+import FormInput from "../../FormInput/FormInput";
+import GoogleLoginButton from "../GoogleLogin/GoogleLoginButton";
+import Link from "next/link";
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
-    name: '',
-    email: '',
-    password: '',
-    error: '',
+    name: "",
+    email: "",
+    password: "",
+    error: "",
     loading: false,
-    message: '',
+    message: "",
     showForm: true,
   });
 
   const router = useRouter();
 
   useEffect(() => {
-    isAuth() && router.push('/');
+    isAuth() && router.push("/");
   });
 
   const { name, email, password, error, loading, message } = values;
@@ -34,16 +32,16 @@ const SignupComponent = () => {
 
     const userData = { name, email, password };
 
-    preSignup(userData).then((data) => {
+    signup(userData).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error, loading: false });
       } else {
         setValues({
           ...values,
-          name: '',
-          email: '',
-          password: '',
-          error: '',
+          name: "",
+          email: "",
+          password: "",
+          error: "",
           loading: false,
           message: data.message,
           showForm: false,
@@ -57,7 +55,7 @@ const SignupComponent = () => {
   };
 
   const notifyError = () =>
-    toast(<h3 className='toast-error'>{error}</h3>, {
+    toast(<h3 className="toast-error">{error}</h3>, {
       type: toast.TYPE.ERROR,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 5000,
@@ -67,9 +65,9 @@ const SignupComponent = () => {
 
   const notifySuccess = () => {
     toast(
-      <Link href='/signin'>
-        <a className='signup-form__toast-success-link'>
-          <h3 className='toast-success'>{message}</h3>
+      <Link href="/signin">
+        <a className="signup-form__toast-success-link">
+          <h3 className="toast-success">{message}</h3>
         </a>
       </Link>,
       {
@@ -80,49 +78,44 @@ const SignupComponent = () => {
         hideProgressBar: true,
       }
     );
-    setValues({ ...values, message: '' });
+    setValues({ ...values, message: "" });
   };
 
   return (
-    <section className='signup-form'>
-      <div className='signup-form__wrapper'>
-        <h2 className='signup-form__title'>Join Our Blog</h2>
+    <section className="signup-form">
+      <div className="signup-form__wrapper">
+        <h2 className="signup-form__title">Join Our Blog</h2>
 
         <form onSubmit={handleSubmit}>
           <FormInput
-            onChange={handleChange('name')}
-            type='text'
-            label='Name'
+            onChange={handleChange("name")}
+            type="text"
+            label="Name"
             value={name}
           />
 
           <FormInput
-            onChange={handleChange('email')}
-            type='email'
-            label='Email'
+            onChange={handleChange("email")}
+            type="email"
+            label="Email"
             value={email}
           />
 
           <FormInput
-            onChange={handleChange('password')}
-            type='password'
-            label='Password'
+            onChange={handleChange("password")}
+            type="password"
+            label="Password"
             value={password}
           />
 
-          <button type='submit' className='signup-form__signup-btn'>
+          <button type="submit" className="signup-form__signup-btn">
             SIGN UP
           </button>
-
-          <div className='signup-form__signin-options'>
-            <p>Or sign in with</p>
-            <GoogleLoginButton />
-          </div>
         </form>
 
-        <div className='notify-message'>
+        <div className="notify-message">
           {message ? notifySuccess() : null}
-          {error ? notifyError() : null}{' '}
+          {error ? notifyError() : null}{" "}
         </div>
       </div>
     </section>

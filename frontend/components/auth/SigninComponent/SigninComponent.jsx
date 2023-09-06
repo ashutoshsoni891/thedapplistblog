@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
-import { signin, authenticate, isAuth } from '../../../actions/auth';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import GoogleLoginButton from '../GoogleLogin/GoogleLoginButton';
-import FormInput from '../../FormInput/FormInput';
-
-import './SigninComponent.scss';
+import { useState, useEffect } from "react";
+import { signin, authenticate, isAuth } from "../../../actions/auth";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import GoogleLoginButton from "../GoogleLogin/GoogleLoginButton";
+import FormInput from "../../FormInput/FormInput";
 
 const SigninComponent = () => {
   const [values, setValues] = useState({
-    email: '',
-    password: '',
-    error: '',
+    email: "",
+    password: "",
+    error: "",
     loading: false,
     showForm: true,
   });
@@ -21,7 +19,7 @@ const SigninComponent = () => {
   const router = useRouter();
 
   useEffect(() => {
-    isAuth() && router.push('/');
+    isAuth() && router.push("/");
   });
 
   const handleSubmit = (e) => {
@@ -39,9 +37,9 @@ const SigninComponent = () => {
         // authenticate user
         authenticate(data, () => {
           if (isAuth() && isAuth().role === 1) {
-            router.push('/admin');
+            router.push("/admin");
           } else {
-            router.push('/user');
+            router.push("/user");
           }
         });
       }
@@ -53,7 +51,7 @@ const SigninComponent = () => {
   };
 
   const notify = () =>
-    toast(<h3 className='toast-error'>{error}</h3>, {
+    toast(<h3 className="toast-error">{error}</h3>, {
       type: toast.TYPE.ERROR,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 5000,
@@ -62,41 +60,37 @@ const SigninComponent = () => {
     });
 
   return (
-    <section className='signin-form'>
-      <div className='signin-form__wrapper'>
-        <h2 className='signin-form__title'>Sign In</h2>
+    <section className="signin-form">
+      <div className="signin-form__wrapper">
+        <h2 className="signin-form__title">Sign In</h2>
         <form onSubmit={handleSubmit}>
           <FormInput
-            onChange={handleChange('email')}
-            type='email'
-            label='Email'
+            onChange={handleChange("email")}
+            type="email"
+            label="Email"
             value={email}
           />
 
           <FormInput
-            onChange={handleChange('password')}
-            type='password'
-            label='Password'
+            onChange={handleChange("password")}
+            type="password"
+            label="Password"
             value={password}
           />
 
-          <button type='submit' className='signin-form__signin-btn'>
+          <button type="submit" className="signin-form__signin-btn">
             SIGN IN
           </button>
 
-          <div className='signin-form__signin-options'>
-            <p>Or sign in with</p>
-            <GoogleLoginButton />
-          </div>
-          <div className='signin-form__forgot-password'>
-            <Link href='/auth/password/forgot'>
-              <a className='signin-form__forgot-password--link'>
+          <div className="signin-form__forgot-password">
+            <Link href="/auth/password/forgot">
+              <a className="signin-form__forgot-password--link">
                 Forgot Password?
               </a>
             </Link>
           </div>
         </form>
-        <div className='notify-message'>{error ? notify() : null}</div>
+        <div className="notify-message">{error ? notify() : null}</div>
       </div>
     </section>
   );

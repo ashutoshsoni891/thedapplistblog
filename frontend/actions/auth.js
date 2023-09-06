@@ -1,77 +1,77 @@
-import fetch from 'isomorphic-fetch';
-import { API } from '../config';
-import cookie from 'js-cookie';
+import fetch from "isomorphic-fetch";
+import { API } from "../config";
+import cookie from "js-cookie";
 
-export const preSignup = user => {
-  return fetch(`${API}/pre-signup`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  })
-    .then(response => response.json())
-    .catch(error => console.error(error));
-};
+// export const preSignup = (user) => {
+//   return fetch(`${API}/pre-signup`, {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(user),
+//   })
+//     .then((response) => response.json())
+//     .catch((error) => console.error(error));
+// };
 
-export const signup = user => {
+export const signup = (user) => {
   return fetch(`${API}/signup`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
   })
-    .then(response => response.json())
-    .catch(error => console.error(error));
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 };
 
-export const signin = user => {
+export const signin = (user) => {
   return fetch(`${API}/signin`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
   })
-    .then(response => response.json())
-    .catch(error => console.error(error));
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 };
 
-export const signout = next => {
-  removeCookie('token');
-  removeLocalStorage('user');
+export const signout = (next) => {
+  removeCookie("token");
+  removeLocalStorage("user");
   next();
 
   return fetch(`${API}/signout`, {
-    method: 'GET'
+    method: "GET",
   })
-    .then(response => console.log('Signout successful'))
-    .catch(error => console.error(error));
+    .then((response) => console.log("Signout successful"))
+    .catch((error) => console.error(error));
 };
 
 // set cookie
 export const setCookie = (key, value) => {
   if (process.browser) {
     cookie.set(key, value, {
-      expires: 1
+      expires: 1,
     });
   }
 };
 
-export const removeCookie = key => {
+export const removeCookie = (key) => {
   if (process.browser) {
     cookie.remove(key, {
-      expires: 1
+      expires: 1,
     });
   }
 };
 
 // get cookie
-export const getCookie = key => {
+export const getCookie = (key) => {
   if (process.browser) {
     return cookie.get(key);
   }
@@ -84,7 +84,7 @@ export const setLocalStorage = (key, value) => {
   }
 };
 
-export const removeLocalStorage = key => {
+export const removeLocalStorage = (key) => {
   if (process.browser) {
     localStorage.removeItem(key);
   }
@@ -93,10 +93,10 @@ export const removeLocalStorage = key => {
 // authenticate user by passing data to cookie and localstorage
 export const authenticate = (data, next) => {
   // set the cookie
-  setCookie('token', data.token);
+  setCookie("token", data.token);
 
   // save data to localstorage
-  setLocalStorage('user', data.user);
+  setLocalStorage("user", data.user);
 
   next();
 };
@@ -104,12 +104,12 @@ export const authenticate = (data, next) => {
 export const isAuth = () => {
   if (process.browser) {
     // if there is a token in the cookie, then we have a user
-    const cookieChecked = getCookie('token');
+    const cookieChecked = getCookie("token");
 
     // if there is a cookie, get the 'user' item from the local storage
     if (cookieChecked) {
-      if (localStorage.getItem('user')) {
-        return JSON.parse(localStorage.getItem('user'));
+      if (localStorage.getItem("user")) {
+        return JSON.parse(localStorage.getItem("user"));
       } else {
         return false;
       }
@@ -119,50 +119,50 @@ export const isAuth = () => {
 
 export const updateUser = (user, next) => {
   if (process.browser) {
-    if (localStorage.getItem('user')) {
-      let auth = JSON.parse(localStorage.getItem('user'));
+    if (localStorage.getItem("user")) {
+      let auth = JSON.parse(localStorage.getItem("user"));
       auth = user;
-      localStorage.setItem('user', JSON.stringify(auth));
+      localStorage.setItem("user", JSON.stringify(auth));
       next();
     }
   }
 };
 
-export const forgotPassword = email => {
+export const forgotPassword = (email) => {
   return fetch(`${API}/forgot-password`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(email)
+    body: JSON.stringify(email),
   })
-    .then(response => response.json())
-    .catch(error => console.error(error));
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 };
 
-export const resetPassword = resetInfo => {
+export const resetPassword = (resetInfo) => {
   return fetch(`${API}/reset-password`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(resetInfo)
+    body: JSON.stringify(resetInfo),
   })
-    .then(response => response.json())
-    .catch(error => console.error(error));
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 };
 
-export const loginWithGoogle = user => {
+export const loginWithGoogle = (user) => {
   return fetch(`${API}/google-login`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
   })
-    .then(response => response.json())
-    .catch(error => console.error(error));
+    .then((response) => response.json())
+    .catch((error) => console.error(error));
 };

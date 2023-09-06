@@ -8,12 +8,13 @@ const { errorHandler } = require("../helpers/dbErrorHandler");
 // *** GOOGLE AUTH ***
 const { OAuth2Client } = require("google-auth-library");
 // *** SENDGRIG MAIL ***
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const sgMail = require("@sendgrid/mail");
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.preSignup = (req, res) => {
   const { name, email, password } = req.body;
 
+  console.log("PAYLOAD :---> ", req.body);
   User.findOne({ email: email.toLowerCase() }, (err, user) => {
     // if user exists, return message
     if (user) {
@@ -31,92 +32,91 @@ exports.preSignup = (req, res) => {
     );
 
     // information to be sent to user by email
-    const emailData = {
-      to: email,
-      from: process.env.EMAIL_FROM,
-      subject: "Account activation link",
-      html: `
-        <h4>Please use the following link to activate your account:</h4>
-        <p>${process.env.PRODUCTION_URL}/auth/account/activate/${token}</p>
+    // const emailData = {
+    //   to: email,
+    //   from: process.env.EMAIL_FROM,
+    //   subject: "Account activation link",
+    //   html: `
+    //     <h4>Please use the following link to activate your account:</h4>
+    //     <p>${process.env.PRODUCTION_URL}/auth/account/activate/${token}</p>
 
-        <hr/>
-        <p>This email may contain sensitive information</p>
-        <a href="https://thedapplist.com">https://thedapplist.com</a>
-    `,
-    };
+    //     <hr/>
+    //     <p>This email may contain sensitive information</p>
+    //     <a href="https://thedapplist.com">https://thedapplist.com</a>
+    // `,
+    // };
 
-    sgMail.send(emailData).then((sent) => {
-      return res.json({
-        message: `
+    // sgMail.send(emailData).then((sent) => {
+    return res.json({
+      message: `
         Email has been sent to ${email}.
         Follow the instructions to activate your account.`,
+    });
+  });
+};
+
+exports.signup = (req, res) => {
+  User.findOne({ email: req.body.email }).exec((error, user) => {
+    if (user) {
+      return res.status(400).json({
+        error: "Email is taken",
+      });
+    }
+
+    const { name, email, password } = req.body;
+    let username = shortId.generate();
+    let profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+    let newUser = new User({ name, email, password, profile, username });
+    newUser.save((error, success) => {
+      if (error) {
+        return res.status(400).json({
+          error: error,
+        });
+      }
+
+      res.json({
+        message: "Signup successful! Please signin.",
       });
     });
   });
 };
 
 // exports.signup = (req, res) => {
-//   User.findOne({ email: req.body.email }).exec((error, user) => {
-//     if (user) {
-//       return res.status(400).json({
-//         error: 'Email is taken'
-//       });
-//     }
+//   const { token } = req.body;
 
-//     const { name, email, password } = req.body;
-//     let username = shortId.generate();
-//     let profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-//     let newUser = new User({ name, email, password, profile, username });
-//     newUser.save((error, success) => {
-//       if (error) {
-//         return res.status(400).json({
-//           error: error
+//   if (token) {
+//     jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+//       if (err) {
+//         return res.status(401).json({
+//           error: "Expired link. Signup again.",
 //         });
 //       }
 
-//       res.json({
-//         message: 'Signup successful! Please signin.'
+//       const { name, email, password } = jwt.decode(token);
+
+//       const username = shortId.generate();
+//       const profile = `${process.env.CLIENT_URL}/profile/${username}`;
+
+//       const user = new User({ name, email, password, profile, username });
+//       user.save((err, user) => {
+//         if (err) {
+//           return res.status(401).json({
+//             error: errorHandler(err),
+//           });
+//         }
+
+//         return res.json({
+//           message: "Signup sucessful! Please sign in.",
+//         });
 //       });
 //     });
-//   });
+//   } else {
+//     return res.json({
+//       message: "Something went wrong. Try again.",
+//     });
+//   }
 // };
-
-exports.signup = (req, res) => {
-  const { token } = req.body;
-
-  if (token) {
-    jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({
-          error: "Expired link. Signup again.",
-        });
-      }
-
-      const { name, email, password } = jwt.decode(token);
-
-      const username = shortId.generate();
-      const profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-      const user = new User({ name, email, password, profile, username });
-      user.save((err, user) => {
-        if (err) {
-          return res.status(401).json({
-            error: errorHandler(err),
-          });
-        }
-
-        return res.json({
-          message: "Signup sucessful! Please sign in.",
-        });
-      });
-    });
-  } else {
-    return res.json({
-      message: "Something went wrong. Try again.",
-    });
-  }
-};
 
 exports.signin = (req, res) => {
   const { email, password } = req.body;

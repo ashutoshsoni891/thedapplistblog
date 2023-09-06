@@ -1,34 +1,31 @@
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import Router from 'next/router';
-import { withRouter } from 'next/router';
-import { getCookie, isAuth } from '../../../actions/auth';
-import { getCategories } from '../../../actions/category';
-import { getTags } from '../../../actions/tag';
-import { fetchBlog, updateBlog } from '../../../actions/blog';
-import { API } from '../../../config';
-import FormInput from '../../FormInput/FormInput';
+import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+import Router from "next/router";
+import { withRouter } from "next/router";
+import { getCookie, isAuth } from "../../../actions/auth";
+import { getCategories } from "../../../actions/category";
+import { getTags } from "../../../actions/tag";
+import { fetchBlog, updateBlog } from "../../../actions/blog";
+import { API } from "../../../config";
+import FormInput from "../../FormInput/FormInput";
 
-import './UpdateBlog.scss';
-import 'react-quill/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const UpdateBlog = ({ router }) => {
-  const [body, setBody] = useState('');
+  const [body, setBody] = useState("");
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [checkedTags, setCheckedTags] = useState([]);
   const [values, setValues] = useState({
-    error: '',
-    success: '',
-    formData: '',
-    title: '',
-    body: '',
+    error: "",
+    success: "",
+    formData: "",
+    title: "",
+    body: "",
   });
 
-  const token = getCookie('token');
+  const token = getCookie("token");
   const { slug } = router.query;
 
   useEffect(() => {
@@ -97,15 +94,15 @@ const UpdateBlog = ({ router }) => {
   };
 
   const handleChange = (name) => (e) => {
-    const value = name === 'photo' ? e.target.files[0] : e.target.value;
+    const value = name === "photo" ? e.target.files[0] : e.target.value;
     // form data to be processed by the backend to create a new blog
     formData.set(name, value);
-    setValues({ ...values, [name]: value, formData, error: '' });
+    setValues({ ...values, [name]: value, formData, error: "" });
   };
 
   // add or remove checked categories from state
   const handleCategoryToggleCheckbox = (categoryId) => () => {
-    setValues({ ...values, error: '' });
+    setValues({ ...values, error: "" });
 
     const allCheckedCategories = [...checkedCategories];
 
@@ -121,12 +118,12 @@ const UpdateBlog = ({ router }) => {
     }
 
     setCheckedCategories(allCheckedCategories);
-    formData.set('categories', allCheckedCategories);
+    formData.set("categories", allCheckedCategories);
   };
 
   // add or remove checked tags from state
   const handleTagToggleCheckbox = (tagId) => () => {
-    setValues({ ...values, error: '' });
+    setValues({ ...values, error: "" });
 
     const allCheckedTags = [...checkedTags];
 
@@ -142,13 +139,13 @@ const UpdateBlog = ({ router }) => {
     }
 
     setCheckedTags(allCheckedTags);
-    formData.set('tags', allCheckedTags);
+    formData.set("tags", allCheckedTags);
   };
 
   const handleBody = (event) => {
     setBody(event);
     // whenever a user is making a change, that change will be save into 'formData.body'
-    formData.set('body', event);
+    formData.set("body", event);
   };
 
   const editBlog = async (event) => {
@@ -157,7 +154,7 @@ const UpdateBlog = ({ router }) => {
     let updatedBlog;
     try {
       updatedBlog = await updateBlog(formData, token, slug);
-      setValues({ ...values, title: '', success: 'Update Successful!' });
+      setValues({ ...values, title: "", success: "Update Successful!" });
 
       if (isAuth() && isAuth().role === 1) {
         // if authenticated and admin
@@ -173,64 +170,64 @@ const UpdateBlog = ({ router }) => {
   };
 
   return (
-    <div className='update-blog'>
-      <h4 className='update-blog__title'>Update blog</h4>
+    <div className="update-blog">
+      <h4 className="update-blog__title">Update blog</h4>
 
-      <div className='update-blog__wrapper'>
+      <div className="update-blog__wrapper">
         <form onSubmit={editBlog}>
           <FormInput
-            type='text'
+            type="text"
             value={title}
-            label='Blog Title'
-            onChange={handleChange('title')}
+            label="Blog Title"
+            onChange={handleChange("title")}
             required
           />
-          <div className='form-group'>
+          <div className="form-group">
             <ReactQuill
               modules={UpdateBlog.modules}
               formats={UpdateBlog.formats}
-              bounds={'.quill'}
+              bounds={".quill"}
               value={body}
-              placeholder='Write something amazing...'
+              placeholder="Write something amazing..."
               onChange={handleBody}
             />
           </div>
 
-          <button type='submit' className='update-blog__publish-btn'>
+          <button type="submit" className="update-blog__publish-btn">
             UPDATE BLOG
           </button>
         </form>
 
         <div>
-          <div className='form-group update-blog__featured-image'>
-            <h5 className='update-blog__featured-image-title'>
+          <div className="form-group update-blog__featured-image">
+            <h5 className="update-blog__featured-image-title">
               Featured Image
             </h5>
 
-            <label className='update-blog__upload-img-btn'>
+            <label className="update-blog__upload-img-btn">
               Upload Image
               <input
-                onChange={handleChange('photo')}
-                type='file'
-                accept='image/*'
+                onChange={handleChange("photo")}
+                type="file"
+                accept="image/*"
                 hidden
               />
             </label>
-            <small className='update-blog__img-size-info'>Max Size: 1MB</small>
+            <small className="update-blog__img-size-info">Max Size: 1MB</small>
           </div>
 
           {body && (
             <img
-              className='update-blog__img'
+              className="update-blog__img"
               src={`${API}/blog/photo/${slug}`}
               alt={title}
             />
           )}
 
           <div>
-            <div className='update-blog__categories'>
-              <h5 className='update-blog__categories-title'>Categories</h5>
-              <ul style={{ maxHeight: '120px', overflowY: 'scroll' }}>
+            <div className="update-blog__categories">
+              <h5 className="update-blog__categories-title">Categories</h5>
+              <ul style={{ maxHeight: "120px", overflowY: "scroll" }}>
                 {categories &&
                   categories.map((category) => (
                     <li key={category._id}>
@@ -240,27 +237,27 @@ const UpdateBlog = ({ router }) => {
                           category._id
                         )}
                         onChange={handleCategoryToggleCheckbox(category._id)}
-                        type='checkbox'
+                        type="checkbox"
                       />
-                      <label className='form-check-label'>
+                      <label className="form-check-label">
                         {category.name}
                       </label>
                     </li>
                   ))}
               </ul>
             </div>
-            <div className='update-blog__tags'>
-              <h5 className='update-blog__tags-title'>Tags</h5>
-              <ul style={{ maxHeight: '120px', overflowY: 'scroll' }}>
+            <div className="update-blog__tags">
+              <h5 className="update-blog__tags-title">Tags</h5>
+              <ul style={{ maxHeight: "120px", overflowY: "scroll" }}>
                 {tags &&
                   tags.map((tag) => (
                     <li key={tag._id}>
                       <input
                         checked={checkCategoriesAndTags(checkedTags, tag._id)}
                         onChange={handleTagToggleCheckbox(tag._id)}
-                        type='checkbox'
+                        type="checkbox"
                       />
-                      <label className='form-check-label'>{tag.name}</label>
+                      <label className="form-check-label">{tag.name}</label>
                     </li>
                   ))}
               </ul>
@@ -274,31 +271,31 @@ const UpdateBlog = ({ router }) => {
 
 UpdateBlog.modules = {
   toolbar: [
-    [{ header: '1' }, { header: '2' }, { header: [3, 4, 5, 6] }, { font: [] }],
+    [{ header: "1" }, { header: "2" }, { header: [3, 4, 5, 6] }, { font: [] }],
     [{ size: [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    ['link', 'image', 'video'],
-    ['clean'],
-    ['code-block'],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image", "video"],
+    ["clean"],
+    ["code-block"],
   ],
 };
 
 UpdateBlog.formats = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'link',
-  'image',
-  'video',
-  'code-block',
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "list",
+  "bullet",
+  "link",
+  "image",
+  "video",
+  "code-block",
 ];
 
 export default withRouter(UpdateBlog);

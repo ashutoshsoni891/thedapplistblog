@@ -1,24 +1,22 @@
-import { useEffect, useState } from 'react';
-import { getCookie } from '../../../actions/auth';
-import { createTag, getTags, deleteTag } from '../../../actions/tag';
-import FormInput from '../../FormInput/FormInput';
-import Modal from '../../Modal/Modal';
-
-import './Tags.scss';
+import { useEffect, useState } from "react";
+import { getCookie } from "../../../actions/auth";
+import { createTag, getTags, deleteTag } from "../../../actions/tag";
+import FormInput from "../../FormInput/FormInput";
+import Modal from "../../Modal/Modal";
 
 const Tags = () => {
   const [values, setValues] = useState({
-    name: '',
+    name: "",
     error: false,
     success: false,
     tags: [],
     removed: false,
     reload: false,
-    slug: '',
+    slug: "",
   });
   const [modal, setModal] = useState(false);
   const { name, error, success, tags, removed, reload, slug } = values;
-  const token = getCookie('token');
+  const token = getCookie("token");
 
   useEffect(() => {
     loadTags();
@@ -52,7 +50,7 @@ const Tags = () => {
           ...values,
           error: false,
           success: false,
-          name: '',
+          name: "",
           removed: !removed,
           reload: !reload,
         });
@@ -66,7 +64,7 @@ const Tags = () => {
       name: e.target.value,
       error: false,
       success: false,
-      removed: '',
+      removed: "",
     });
   };
 
@@ -79,7 +77,7 @@ const Tags = () => {
           ...values,
           error: false,
           success: false,
-          name: '',
+          name: "",
           removed: !removed,
           reload: !reload,
         });
@@ -90,27 +88,27 @@ const Tags = () => {
 
   return (
     <>
-      <section className='tags-crud'>
+      <section className="tags-crud">
         <form onSubmit={handleSubmit}>
           <FormInput
             onChange={handleChange}
-            label='Tag name'
+            label="Tag name"
             value={name}
-            type='text'
+            type="text"
             required
           />
-          <button type='submit' className='tags-crud__create-tag-btn'>
+          <button type="submit" className="tags-crud__create-tag-btn">
             Create Tag
           </button>
         </form>
-        <div className='tags-crud__list'>
+        <div className="tags-crud__list">
           {tags.map((tag) => (
             <button
               onClick={() => toggleTagModal(tag.slug)}
-              title='Click to delete'
+              title="Click to delete"
               key={tag._id}
-              type='button'
-              className='tags-crud__list--tag-btn'
+              type="button"
+              className="tags-crud__list--tag-btn"
             >
               {tag.name}
             </button>
@@ -119,11 +117,11 @@ const Tags = () => {
       </section>
 
       {modal ? (
-        <div onClick={toggleTagModal} className='modal__back-drop'></div>
+        <div onClick={toggleTagModal} className="modal__back-drop"></div>
       ) : null}
 
       <Modal
-        text='Delete Tag'
+        text="Delete Tag"
         slug={slug}
         showModal={modal}
         close={toggleTagModal}
